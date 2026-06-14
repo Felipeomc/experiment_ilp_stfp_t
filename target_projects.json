@@ -2,128 +2,128 @@
   "projects": [
     {
       "id": "P1",
-      "name": "Manutenção de Portal Corporativo .NET",
-      "description": "Portal interno corporativo em .NET, com partes em desktop e web, crítico para rotinas administrativas. Objetivo: corrigir bugs, melhorar performance e modernizar o front-end gradualmente sem interromper a operação.",
+      "name": "Plataforma Web Angular + Spring Boot com IA Generativa",
+      "description": "Sistema web corporativo com front-end Angular, backend Spring Boot e integração com modelos de IA generativa (LLMs) para análise e automação de documentos. Inspirado nos projetos EPSON ADVANTAGES, SPICE e Vulnerability Smart Assistance do Virtus.",
       "team_size": 4,
       "dominio": {
-        "must": ["Desktop", "Web"],
+        "must": ["Web", "AI"],
         "should": ["Cloud"],
         "could": ["Mobile"]
       },
       "ecossistema": {
-        "must": [".NET"],
-        "should": ["React"],
-        "could": ["MongoDB"]
+        "must": ["Angular", "Spring Boot"],
+        "should": ["AWS Lambda", "LangChain"],
+        "could": ["Docker", "PostgreSQL"]
       },
       "linguagens": {
-        "must": ["C#"],
-        "should": ["JavaScript", "TypeScript"],
-        "could": ["Python"]
+        "must": ["Java", "TypeScript"],
+        "should": ["Python"],
+        "could": ["SQL"]
       }
     },
     {
       "id": "P2",
-      "name": "App Mobile Híbrido com Painel Web",
-      "description": "Aplicativo mobile para Android e iOS consumindo backend existente, com painel web simples para suporte. Foco em UX, boa comunicação entre plataformas e integração estável com o backend.",
+      "name": "App Mobile IoT com Backend Cloud",
+      "description": "Aplicativo mobile para Android e iOS integrado a dispositivos IoT via BLE e MQTT, com backend serverless na AWS. Inspirado nos projetos DistributedSecAccess, IDSecAccess e Smart Security do Virtus.",
       "team_size": 4,
       "dominio": {
-        "must": ["Mobile"],
-        "should": ["Web"],
-        "could": ["Cloud"]
+        "must": ["Mobile", "IoT"],
+        "should": ["Cloud"],
+        "could": ["Web"]
       },
       "ecossistema": {
-        "must": ["Android", "iOS/iPadOS"],
-        "should": ["React"],
-        "could": [".NET"]
+        "must": ["Android", "iOS"],
+        "should": ["AWS Lambda", "Bluetooth Low Energy"],
+        "could": ["REST API", "MQTT"]
       },
       "linguagens": {
         "must": ["Kotlin", "Swift"],
-        "should": ["JavaScript", "TypeScript"],
-        "could": ["Java", "C#"]
+        "should": ["Java"],
+        "could": ["Python"]
       }
     },
     {
       "id": "P3",
-      "name": "Plataforma IoT de Sensoriamento em Nuvem",
-      "description": "Plataforma para coletar dados de sensores IoT, processar em nuvem e exibir em painel web. Foco em ingestão robusta, processamento em nuvem e visualização mínima porém funcional.",
+      "name": "Plataforma Cloud de Processamento de Documentos com IA",
+      "description": "Pipeline serverless na AWS para ingestão, extração e análise inteligente de documentos usando LLMs e serviços gerenciados. Inspirado nos projetos Document Analyzer, XControl-AI e IA TEAMS do Virtus.",
       "team_size": 4,
       "dominio": {
-        "must": ["IoT", "Cloud"],
+        "must": ["AI", "Cloud"],
         "should": ["Web"],
-        "could": ["Desktop"]
+        "could": ["Mobile"]
       },
       "ecossistema": {
-        "must": ["AWS Lambda"],
-        "should": ["React", "Angular", "MongoDB"],
-        "could": ["Android"]
+        "must": ["AWS Lambda", "Amazon Bedrock"],
+        "should": ["LangChain", "Docker"],
+        "could": ["Angular", "Amazon S3"]
       },
       "linguagens": {
-        "must": ["Python", "C++"],
-        "should": ["JavaScript"],
-        "could": ["Java", "TypeScript"]
+        "must": ["Python"],
+        "should": ["TypeScript", "Java"],
+        "could": ["SQL"]
       }
     },
     {
       "id": "P4",
-      "name": "SaaS Web de Relatórios Analíticos",
-      "description": "Aplicação SaaS web para geração de dashboards e relatórios analíticos usando dados em MongoDB. Ênfase em consultas eficientes, boa modelagem e interface clara para visualização.",
+      "name": "SaaS Web de Rastreamento e Gestão com Angular",
+      "description": "Plataforma SaaS web para rastreamento de ativos, gestão de usuários e relatórios, com front-end Angular, backend Spring Boot e banco relacional. Inspirado nos projetos Rastreamento de Ativos Fixos, SMART CABLE e LMS do Virtus.",
       "team_size": 4,
       "dominio": {
         "must": ["Web"],
         "should": ["Cloud"],
-        "could": ["Desktop"]
+        "could": ["Mobile"]
       },
       "ecossistema": {
-        "must": ["MongoDB"],
-        "should": ["Angular", "React"],
-        "could": ["AWS Lambda"]
+        "must": ["Angular", "Spring Boot"],
+        "should": ["PostgreSQL", "Docker"],
+        "could": ["AWS", "REST API"]
       },
       "linguagens": {
-        "must": ["JavaScript"],
-        "should": ["TypeScript", "Python"],
-        "could": ["Java", "C#"]
+        "must": ["TypeScript", "Java"],
+        "should": ["JavaScript", "SQL"],
+        "could": ["Python"]
       }
     },
     {
       "id": "P5",
-      "name": "Plataforma Crítica Web+Cloud",
-      "description": "Sistema Web+Cloud crítico com front-end em React, backend serverless em AWS Lambda e banco MongoDB. Requer alta confiabilidade, testes, monitoramento e escalabilidade.",
+      "name": "App Mobile React Native com IA e Cloud AWS",
+      "description": "Aplicativo mobile multiplataforma em React Native com IA embarcada, integração a serviços AWS e backend em Node.js. Inspirado nos projetos POS Companion App, Personal Print AI e AI Engagement do Virtus.",
       "team_size": 4,
       "dominio": {
-        "must": ["Web", "Cloud"],
-        "should": ["Mobile"],
-        "could": ["Desktop"]
+        "must": ["Mobile", "AI"],
+        "should": ["Cloud"],
+        "could": ["IoT"]
       },
       "ecossistema": {
-        "must": ["React", "AWS Lambda", "MongoDB"],
-        "should": [".NET"],
-        "could": ["Android"]
+        "must": ["React Native", "AWS"],
+        "should": ["Node.js", "Spring Boot"],
+        "could": ["Android", "iOS"]
       },
       "linguagens": {
-        "must": ["JavaScript", "TypeScript", "Python"],
-        "should": ["C#", "Java"],
+        "must": ["TypeScript", "JavaScript"],
+        "should": ["Python", "Java"],
         "could": ["Kotlin", "Swift"]
       }
     },
     {
       "id": "P6",
-      "name": "Plataforma Crítica de Hardware Embarcado",
-      "description": "Projeto de hardware embarcado com foco em desenvolvimento de placas PCB, eletrônica analógica e digital, e integração com IoT e nuvem. Requer profissionais com experiência em sistemas embarcados, prototipação e linguagens de baixo nível.",
+      "name": "Sistema Desktop-Standalone de Telemetria e Diagnóstico de Hardware",
+      "description": "Ferramenta desktop standalone para Windows para coleta, processamento e visualização de telemetria de hardware via drivers de baixo nível. Inspirado nos projetos Enhanced Platform Telemetry e Scanner AI Configuration do Virtus.",
       "team_size": 4,
       "dominio": {
-        "must": ["Hardware", "Embedded"],
-        "should": ["IoT"],
+        "must": ["Desktop-Standalone"],
+        "should": ["AI"],
         "could": ["Cloud"]
       },
       "ecossistema": {
-        "must": ["PCB", "Desenvolvimento de Placa"],
-        "should": ["Eletrônica (circuitos lógicos e analógicos)"],
-        "could": ["Instrumentação (osciloscópio, analisador lógico)", "Prototipação"]
+        "must": ["Windows", "PCI"],
+        "should": ["Flask", "REST API"],
+        "could": ["Docker", "MongoDB"]
       },
       "linguagens": {
-        "must": ["C"],
-        "should": ["C++"],
-        "could": ["Python"]
+        "must": ["C++", "Python"],
+        "should": ["Java"],
+        "could": ["SQL"]
       }
     }
   ]

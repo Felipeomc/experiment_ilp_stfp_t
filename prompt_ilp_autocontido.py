@@ -1,10 +1,9 @@
 """
-PROMPT COMPLETO — Implementação ILP para STFP-T
+PROMPT — Implementação ILP para STFP-T
 ================================================
-Cole este texto como mensagem para Claude em uma nova conversa.
 
 ARQUIVOS QUE DEVEM SER ANEXADOS (exatamente estes 3):
-  1. formalizacao_STFP_MILP_completa.pdf  — formalização matemática linearizada
+  1. formalizacao_STFP_linearizado.pdf    — formalização matemática linearizada
   2. base_final_com_rdas.json             — base de desenvolvedores
   3. target_projects.json                 — projetos-alvo P1-P6
 
@@ -26,15 +25,14 @@ um conjunto de desenvolvedores e um projeto-alvo com requisitos MoSCoW
 (Must/Should/Could) em três dimensões (domínio, ecossistema, linguagens),
 o objetivo é selecionar uma equipe de tamanho k que maximize a Aptidão
 Técnica (AT). Este modelo é usado como baseline de comparação com um
-Algoritmo Genético (GA) na tese de doutorado sobre o sistema TeamPlus —
-PPGI/UFPB.
+Algoritmo Genético (GA).
 
 =======================================================================
 2. FORMALIZAÇÃO MATEMÁTICA
 =======================================================================
 
 A formalização completa está no PDF anexado
-(formalizacao_STFP_MILP_completa.pdf). Leia-o integralmente antes de
+(formalizacao_STFP_linearizado.pdf). Leia-o integralmente antes de
 implementar. Ele contém:
 
   - Seção 2.2: variáveis de decisão x_i, y_u^δ, z_u^δ e suas restrições
@@ -54,7 +52,7 @@ linearizações descritas nas subseções C.1 a C.4.
 =======================================================================
 
 Os coeficientes abaixo foram calibrados por regressão linear contra
-cenários rotulados pela Rede Bayesiana. São iguais para as 3 dimensões.
+cenários rotulados pela Rede Bayesiana, modelo probabilistico criado para representar o conhecimento de um especialista em formação de equipes de Software. São iguais para as 3 dimensões.
 
 Caso B (sit2):
   b        = -0.333333
@@ -160,14 +158,6 @@ Resultado esperado:
   - Todos os requisitos Must cobertos (✓)
   - AT entre 0 e 1
 
-=======================================================================
-8. NOTA DE IMPLEMENTAÇÃO ASSISTIDA POR IA
-=======================================================================
-
-Para citação na tese:
-"A implementação do modelo MILP foi desenvolvida com auxílio de
-ferramenta de IA generativa (Claude, Anthropic, 2026) e verificada
-pelo co-autor Rian, especialista em Programação Linear Inteira."
 
 =======================================================================
 9. EXTENSÕES FUTURAS (não implementar agora, só documentar no código)

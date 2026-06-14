@@ -1,0 +1,130 @@
+{
+  "projects": [
+    {
+      "id": "P1",
+      "name": "Manutenção de Portal Corporativo .NET",
+      "description": "Portal interno corporativo em .NET, com partes em desktop e web, crítico para rotinas administrativas. Objetivo: corrigir bugs, melhorar performance e modernizar o front-end gradualmente sem interromper a operação.",
+      "team_size": 4,
+      "dominio": {
+        "must": ["Desktop", "Web"],
+        "should": ["Cloud"],
+        "could": ["Mobile"]
+      },
+      "ecossistema": {
+        "must": [".NET"],
+        "should": ["React"],
+        "could": ["MongoDB"]
+      },
+      "linguagens": {
+        "must": ["C#"],
+        "should": ["JavaScript", "TypeScript"],
+        "could": ["Python"]
+      }
+    },
+    {
+      "id": "P2",
+      "name": "App Mobile Híbrido com Painel Web",
+      "description": "Aplicativo mobile para Android e iOS consumindo backend existente, com painel web simples para suporte. Foco em UX, boa comunicação entre plataformas e integração estável com o backend.",
+      "team_size": 4,
+      "dominio": {
+        "must": ["Mobile"],
+        "should": ["Web"],
+        "could": ["Cloud"]
+      },
+      "ecossistema": {
+        "must": ["Android", "iOS/iPadOS"],
+        "should": ["React"],
+        "could": [".NET"]
+      },
+      "linguagens": {
+        "must": ["Kotlin", "Swift"],
+        "should": ["JavaScript", "TypeScript"],
+        "could": ["Java", "C#"]
+      }
+    },
+    {
+      "id": "P3",
+      "name": "Plataforma IoT de Sensoriamento em Nuvem",
+      "description": "Plataforma para coletar dados de sensores IoT, processar em nuvem e exibir em painel web. Foco em ingestão robusta, processamento em nuvem e visualização mínima porém funcional.",
+      "team_size": 4,
+      "dominio": {
+        "must": ["IoT", "Cloud"],
+        "should": ["Web"],
+        "could": ["Desktop"]
+      },
+      "ecossistema": {
+        "must": ["AWS Lambda"],
+        "should": ["React", "Angular", "MongoDB"],
+        "could": ["Android"]
+      },
+      "linguagens": {
+        "must": ["Python", "C++"],
+        "should": ["JavaScript"],
+        "could": ["Java", "TypeScript"]
+      }
+    },
+    {
+      "id": "P4",
+      "name": "SaaS Web de Relatórios Analíticos",
+      "description": "Aplicação SaaS web para geração de dashboards e relatórios analíticos usando dados em MongoDB. Ênfase em consultas eficientes, boa modelagem e interface clara para visualização.",
+      "team_size": 4,
+      "dominio": {
+        "must": ["Web"],
+        "should": ["Cloud"],
+        "could": ["Desktop"]
+      },
+      "ecossistema": {
+        "must": ["MongoDB"],
+        "should": ["Angular", "React"],
+        "could": ["AWS Lambda"]
+      },
+      "linguagens": {
+        "must": ["JavaScript"],
+        "should": ["TypeScript", "Python"],
+        "could": ["Java", "C#"]
+      }
+    },
+    {
+      "id": "P5",
+      "name": "Plataforma Crítica Web+Cloud",
+      "description": "Sistema Web+Cloud crítico com front-end em React, backend serverless em AWS Lambda e banco MongoDB. Requer alta confiabilidade, testes, monitoramento e escalabilidade.",
+      "team_size": 4,
+      "dominio": {
+        "must": ["Web", "Cloud"],
+        "should": ["Mobile"],
+        "could": ["Desktop"]
+      },
+      "ecossistema": {
+        "must": ["React", "AWS Lambda", "MongoDB"],
+        "should": [".NET"],
+        "could": ["Android"]
+      },
+      "linguagens": {
+        "must": ["JavaScript", "TypeScript", "Python"],
+        "should": ["C#", "Java"],
+        "could": ["Kotlin", "Swift"]
+      }
+    },
+    {
+      "id": "P6",
+      "name": "Plataforma Crítica de Hardware Embarcado",
+      "description": "Projeto de hardware embarcado com foco em desenvolvimento de placas PCB, eletrônica analógica e digital, e integração com IoT e nuvem. Requer profissionais com experiência em sistemas embarcados, prototipação e linguagens de baixo nível.",
+      "team_size": 4,
+      "dominio": {
+        "must": ["Hardware", "Embedded"],
+        "should": ["IoT"],
+        "could": ["Cloud"]
+      },
+      "ecossistema": {
+        "must": ["PCB", "Desenvolvimento de Placa"],
+        "should": ["Eletrônica (circuitos lógicos e analógicos)"],
+        "could": ["Instrumentação (osciloscópio, analisador lógico)", "Prototipação"]
+      },
+      "linguagens": {
+        "must": ["C"],
+        "should": ["C++"],
+        "could": ["Python"]
+      }
+    }
+  ]
+}

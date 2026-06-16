@@ -10,7 +10,7 @@ MODO atual: AT_ONLY
   compara com o GA apenas em AT.
   Para ativar AE_FULL, altere MODO abaixo.
 
-Tese de Doutorado — PPGI/UFPB | Sistema TeamPlus
+
 """
 
 # =============================================================================

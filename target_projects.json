@@ -6,7 +6,7 @@
       "description": "Sistema web corporativo com front-end Angular, backend Spring Boot e integração com modelos de IA generativa (LLMs) para análise e automação de documentos. Inspirado nos projetos EPSON ADVANTAGES, SPICE e Vulnerability Smart Assistance do Virtus.",
       "team_size": 4,
       "dominio": {
-        "must": ["Web", "AI"],
+        "must": ["Web", "artificial intelligence"],
         "should": ["Cloud"],
         "could": ["Mobile"]
       },
@@ -48,7 +48,7 @@
       "description": "Pipeline serverless na AWS para ingestão, extração e análise inteligente de documentos usando LLMs e serviços gerenciados. Inspirado nos projetos Document Analyzer, XControl-AI e IA TEAMS do Virtus.",
       "team_size": 4,
       "dominio": {
-        "must": ["AI", "Cloud"],
+        "must": ["artificial intelligence", "Cloud"],
         "should": ["Web"],
         "could": ["Mobile"]
       },
@@ -90,7 +90,7 @@
       "description": "Aplicativo mobile multiplataforma em React Native com IA embarcada, integração a serviços AWS e backend em Node.js. Inspirado nos projetos POS Companion App, Personal Print AI e AI Engagement do Virtus.",
       "team_size": 4,
       "dominio": {
-        "must": ["Mobile", "AI"],
+        "must": ["Mobile", "artificial intelligence"],
         "should": ["Cloud"],
         "could": ["IoT"]
       },
@@ -112,7 +112,7 @@
       "team_size": 4,
       "dominio": {
         "must": ["Desktop-Standalone"],
-        "should": ["AI"],
+        "should": ["artificial intelligence"],
         "could": ["Cloud"]
       },
       "ecossistema": {

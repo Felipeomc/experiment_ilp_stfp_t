@@ -107,22 +107,22 @@
     },
     {
       "id": "P6",
-      "name": "Sistema Desktop-Standalone de Telemetria e Diagnóstico de Hardware",
-      "description": "Ferramenta desktop standalone para Windows para coleta, processamento e visualização de telemetria de hardware via drivers de baixo nível. Inspirado nos projetos Enhanced Platform Telemetry e Scanner AI Configuration do Virtus.",
+      "name": "Plataforma IoT Industrial com Integração Web",
+      "description": "Plataforma para integração de dispositivos industriais via protocolos IoT (MQTT, Modbus), orquestração com Node-RED e painel web para monitoramento em tempo real. Inspirado nos projetos MultiHub-IoT e IoT Interoperability do Virtus.",
       "team_size": 4,
       "dominio": {
-        "must": ["Desktop-Standalone"],
-        "should": ["artificial intelligence"],
-        "could": ["Cloud"]
+        "must": ["IoT", "Web"],
+        "should": ["Cloud"],
+        "could": ["artificial intelligence"]
       },
       "ecossistema": {
-        "must": ["Windows", "PCI"],
-        "should": ["Flask", "REST API"],
-        "could": ["Docker", "MongoDB"]
+        "must": ["MQTT", "Node-RED"],
+        "should": ["Angular", "Spring Boot"],
+        "could": ["REST API", "Docker"]
       },
       "linguagens": {
-        "must": ["C++", "Python"],
-        "should": ["Java"],
+        "must": ["Java"],
+        "should": ["TypeScript", "Python"],
         "could": ["SQL"]
       }
     }

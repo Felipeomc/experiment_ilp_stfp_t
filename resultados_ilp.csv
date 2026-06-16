@@ -1,0 +1,7 @@
+projeto,modo,status,AT,AC,AE,equipe,tempo_s,must_dom_ok,must_eco_ok,must_ling_ok
+P1,AT_ONLY,Optimal,1.0,,,"[194, 247, 394, 691]",1.13,True,True,True
+P2,AT_ONLY,Optimal,0.944444,,,"[86, 176, 401, 409]",7.28,True,True,True
+P3,AT_ONLY,Optimal,0.960317,,,"[103, 338, 725, 739]",2.82,True,True,True
+P4,AT_ONLY,Optimal,1.0,,,"[194, 657, 683, 728]",0.9,True,True,True
+P5,AT_ONLY,Optimal,0.960317,,,"[7, 574, 609, 631]",4.22,True,True,True
+P6,AT_ONLY,Optimal,0.992063,,,"[106, 394, 422, 542]",2.23,True,True,True

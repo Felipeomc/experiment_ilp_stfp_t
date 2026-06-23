@@ -6,7 +6,7 @@ AE (aptidão global mixminmax), conforme formalização matemática em
 formalizacao_STFP_linearizado.pdf.
 
 Usado como baseline de comparação com o GA do sistema TeamPlus.
-Tese de Doutorado — PPGI/UFPB.
+
 
 Dependência única: pip install pulp
 Python 3.8+
@@ -16,22 +16,15 @@ Nota de implementação:
   e verificado pelo co-autor Rian, especialista em Programação Linear
   Inteira.
 
-IMPORTANTE SOBRE AC:
-  A base real não possui métricas OSF/SLF. O AC é estimado a partir
-  do grafo de colaboração real (Graph_DB_real.json), onde cada aresta
-  contém weight = f(N) pré-calculado. A aproximação linear usada é:
-    AC_aprox = (1/k) * sum_i AC_medio_i * x_i
-  onde AC_medio_i é a média dos pesos de todas as arestas do dev i.
-  Isso é completamente linear — sem produto de variáveis binárias.
-  O experimento atual roda em modo AT_ONLY. O modo AE_FULL está
-  implementado e pode ser ativado no bench quando houver dados mais
-  completos de AC.
-
-EXTENSÕES FUTURAS:
-  TODO: quando houver OSF/SLF reais, substituir AC_aprox pela formulação
-        exata da Seção 2.7: AC = sum_s cs * ps(T), onde ps(T) é a proporção
-        de pares da equipe na faixa s. Isso requer produto x_i * x_j
-        (não linear), que deve ser linearizado com variáveis binárias p_ij.
+MODOS DISPONÍVEIS:
+  AT_ONLY      — maximiza apenas AT. AC e AE ignorados.
+  AE_FULL_APROX — AC aproximado: média individual de cada dev no grafo.
+                  Linear, sem variáveis extras. Rápido mas enviesado
+                  para devs com histórico colaborativo amplo.
+  AE_FULL_EXACT — AC exato: média dos pesos PC_ij apenas entre os pares
+                  da equipe selecionada. Usa variáveis binárias p_ij
+                  (McCormick) apenas para arestas existentes no grafo
+                  (~12.809 pares). Fiel ao cálculo do GA/surrogate.
 """
 
 # =============================================================================
@@ -66,6 +59,7 @@ MU_NEUTRO = 0.5   # escore neutro para dimensão sem requisitos (Caso A)
 
 # Centróides AC — faixas VL/L/M/H/VH (referência para futura extensão)
 CENTROIDES_AC = [0.1, 0.3, 0.5, 0.7, 0.9]
+AC_LOW_SEM_COLABORACAO = 0.3   # centroide "Low" — par/dev sem colaboracao previa
 
 # =============================================================================
 import json
@@ -145,7 +139,9 @@ def carregar_grafo(caminho: str) -> Grafo:
 def calcular_ac_medios(devs: List[Dev], grafo: Grafo) -> Dict[int, float]:
     """
     Calcula AC_medio_i para cada dev = media dos pesos de todas as
-    arestas em que o dev participa. Devs sem arestas recebem 0.0.
+    arestas em que o dev participa. Devs sem nenhuma aresta no grafo
+    (nunca colaboraram com ninguem) recebem AC_LOW_SEM_COLABORACAO (0.3),
+    seguindo a regra do especialista: ausencia de colaboracao = faixa Low.
 
     Usada na aproximacao linear de AC:
       AC_aprox = (1/k) * sum_i AC_medio_i * x_i
@@ -162,10 +158,30 @@ def calcular_ac_medios(devs: List[Dev], grafo: Grafo) -> Dict[int, float]:
     ac_medios: Dict[int, float] = {}
     for dev in devs:
         uid = dev["id"]
-        ac_medios[uid] = soma[uid] / conta[uid] if uid in conta else 0.0
+        ac_medios[uid] = soma[uid] / conta[uid] if uid in conta else AC_LOW_SEM_COLABORACAO
 
     return ac_medios
 
+def preparar_grafo_ilp(
+    devs: List[Dev], grafo: Grafo
+) -> Dict[Tuple[int, int], float]:
+    """
+    Filtra o grafo mantendo apenas pares (i,j) onde AMBOS os devs
+    estão na lista de candidatos (índice na lista, não user_id).
+    Retorna dict {(idx_i, idx_j): weight} com idx_i < idx_j.
+    Usado pelo modo AE_FULL_EXACT para criar variáveis p_ij
+    apenas onde há aresta real — reduz de ~128k para ~12k pares.
+    """
+    uid_para_idx = {d["id"]: i for i, d in enumerate(devs)}
+    grafo_ilp: Dict[Tuple[int, int], float] = {}
+    for (uid_a, uid_b), w in grafo.items():
+        ia = uid_para_idx.get(uid_a)
+        ib = uid_para_idx.get(uid_b)
+        if ia is None or ib is None:
+            continue
+        par = (min(ia, ib), max(ia, ib))
+        grafo_ilp[par] = w
+    return grafo_ilp
 
 # ===========================================================================
 # 2. CONSTRUCAO DO MODELO MILP
@@ -185,6 +201,7 @@ def construir_modelo(
     devs:      List[Dev],
     projeto:   Projeto,
     ac_medios: Dict[int, float],
+    grafo_ilp: Dict[Tuple[int, int], float],   # NOVO
     modo:      str,
     k:         int,
 ) -> Tuple[pulp.LpProblem, Dict, Dict]:
@@ -391,20 +408,55 @@ def construir_modelo(
     print(f"  [Parte 5] AT = ({W_DOM}*DOM + {W_ECO}*ECO + {W_LING}*LING) / {soma_pesos}")
 
     # ------------------------------------------------------------------
-    # Partes 6 e 7 — AC e AE (somente modo AE_FULL)  (Secoes 2.7-2.8)
+    # Partes 6 e 7 — AC e AE (somente AE_FULL_APROX ou AE_FULL_EXACT)
     # ------------------------------------------------------------------
     AC_expr: Any = None
     m_var:   Any = None
     M_var:   Any = None
 
-    if modo == "AE_FULL":
-        # Parte 6: AC_aprox linear
+    if modo == "AE_FULL_APROX":
+        # AC aproximado: média individual de cada dev (linear direto)
         AC_expr = (1.0 / k) * pulp.lpSum(
             ac_medios.get(devs[i]["id"], 0.0) * x[i] for i in range(N)
         )
         devs_com_ac = sum(1 for d in devs if ac_medios.get(d["id"], 0.0) > 0)
         print(f"  [Parte 6] AC_aprox linear | devs com AC>0: {devs_com_ac}/{N}")
 
+    elif modo == "AE_FULL_EXACT":
+        # AC exato: media dos PC_ij dos pares da equipe selecionada.
+        # p_ij = 1 sse x_i=1 e x_j=1 (McCormick exato sobre binarias).
+        # Pares da equipe SEM aresta no grafo (nunca colaboraram)
+        # recebem peso fixo AC_LOW_SEM_COLABORACAO (0.3), regra do
+        # especialista para ausencia de colaboracao previa.
+        # AC = (1/C(k,2)) * [ sum(w_ij * p_ij) + 0.3 * (C(k,2) - sum(p_ij)) ]
+        pares_com_aresta = 0
+        p_vars: Dict[Tuple[int,int], pulp.LpVariable] = {}
+
+        for (ia, ib), w in grafo_ilp.items():
+            vn = f"p_{ia}_{ib}"
+            p  = pulp.LpVariable(vn, cat="Binary")
+            p_vars[(ia, ib)] = p
+            modelo += (p <= x[ia],            f"{vn}_ub1")
+            modelo += (p <= x[ib],            f"{vn}_ub2")
+            modelo += (p >= x[ia] + x[ib] - 1, f"{vn}_lb")
+            pares_com_aresta += 1
+
+        n_pares_equipe = k * (k - 1) // 2   # C(k,2)
+
+        soma_pares_com_aresta_na_equipe = pulp.lpSum(p_vars.values())
+        soma_peso_arestas = pulp.lpSum(
+            w * p_vars[(ia, ib)] for (ia, ib), w in grafo_ilp.items()
+        )
+        AC_expr = (1.0 / n_pares_equipe) * (
+            soma_peso_arestas
+            + AC_LOW_SEM_COLABORACAO * (n_pares_equipe - soma_pares_com_aresta_na_equipe)
+        )
+
+        print(f"  [Parte 6] AC_exato | arestas no grafo: {pares_com_aresta} "
+              f"| C(k,2)={n_pares_equipe} | variaveis p_ij: {len(p_vars)} "
+              f"| Low p/ pares sem colaboracao: {AC_LOW_SEM_COLABORACAO}")
+
+    if modo in ("AE_FULL_APROX", "AE_FULL_EXACT"):
         # Parte 7: AE = mixminmax(AT, AC) linearizado  (Secao 2.8)
         m_var = pulp.LpVariable("m_minAT_AC", lowBound=0.0, upBound=1.0)
         M_var = pulp.LpVariable("M_maxAT_AC", lowBound=0.0, upBound=1.0)
@@ -415,7 +467,7 @@ def construir_modelo(
         modelo += (M_var >= AT_expr,               "M_lb_AT")
         modelo += (M_var >= AC_expr,               "M_lb_AC")
         modelo += (M_var <= AT_expr + (1 - b_ae),  "M_ub_AT")
-        modelo += (M_var <= AC_expr + b_ae,         "M_ub_AC")
+        modelo += (M_var <= AC_expr + b_ae,        "M_ub_AC")
 
         AE_expr = (W_MIN * m_var + W_MAX * M_var) / (W_MIN + W_MAX)
         modelo += (AE_expr, "objetivo_AE")
@@ -438,8 +490,6 @@ def construir_modelo(
         "x":         x,
     }
     return modelo, x, info
-
-
 # ===========================================================================
 # 3. RESOLVER
 # ===========================================================================
@@ -448,6 +498,7 @@ def resolver_ilp(
     projeto:        Projeto,
     devs:           List[Dev],
     ac_medios:      Dict[int, float],
+    grafo_ilp:      Dict[Tuple[int, int], float],   # NOVO
     modo:           str = "AT_ONLY",
     tamanho_equipe: int = 4,
     tempo_limite:   int = 120,
@@ -468,8 +519,10 @@ def resolver_ilp(
             "equipe": [], "tempo_s": 0.0,
             "escores_dim": {}, "cobertura_must": {},
         }
-
-    modelo, x, info = construir_modelo(devs, projeto, ac_medios, modo, k)
+    resultado_construir = construir_modelo(devs, projeto, ac_medios, grafo_ilp, modo, k)
+    #print(f"[DEBUG] construir_modelo retornou: {type(resultado_construir)}")
+    modelo, x, info = resultado_construir
+    
 
     solver = pulp.PULP_CBC_CMD(msg=0, timeLimit=tempo_limite)
     t0 = time.time()
@@ -512,7 +565,7 @@ def resolver_ilp(
 
     AC_val: Optional[float] = None
     AE_val: Optional[float] = None
-    if modo == "AE_FULL":
+    if modo in ("AE_FULL_APROX", "AE_FULL_EXACT"):
         m_v    = pulp.value(info["m_var"]) or 0.0
         M_v    = pulp.value(info["M_var"]) or 0.0
         AC_val = round(pulp.value(info["AC_expr"]) or 0.0, 6)

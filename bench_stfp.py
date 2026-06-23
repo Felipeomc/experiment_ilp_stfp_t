@@ -10,22 +10,21 @@ MODO atual: AT_ONLY
   compara com o GA apenas em AT.
   Para ativar AE_FULL, altere MODO abaixo.
 
-
 """
 
 # =============================================================================
 # CONSTANTES CONFIGURÁVEIS — unica parte que muda entre experimentos
 # =============================================================================
 
-CAMINHO_BASE     = "base_final_com_rdas_anonimizado.json"
+CAMINHO_BASE     = "base_final.json"
 CAMINHO_PROJETOS = "target_projects.json"
 CAMINHO_GRAFO    = "Graph_DB_real.json"
-CAMINHO_SAIDA    = "resultados_ilp.csv"
+CAMINHO_SAIDA    = "resultados_ilp_P10_rerun.csv"
 
-MODO             = "AT_ONLY"    # "AT_ONLY" | "AE_FULL"
-PROJETOS_IDS     = ["P1", "P2", "P3", "P4", "P5", "P6"]
+MODO = "AE_FULL_EXACT"   # "AT_ONLY" | "AE_FULL_APROX" | "AE_FULL_EXACT"
+PROJETOS_IDS     = ["P10"]   #["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11","P12"]
 MAX_DEVS         = None         # None = todos; int = limitar para teste
-TEMPO_LIMITE     = 120          # segundos por projeto
+TEMPO_LIMITE     = 600          # segundos por projeto
 
 # =============================================================================
 import csv
@@ -35,6 +34,7 @@ from stfp_ilp import (
     carregar_projetos,
     carregar_grafo,
     calcular_ac_medios,
+    preparar_grafo_ilp,    # NOVO
     resolver_ilp,
     exibir_resultado,
 )
@@ -67,6 +67,11 @@ def main() -> None:
 
     print("[BENCH] Calculando AC medios...")
     ac_medios = calcular_ac_medios(devs, grafo)
+
+    print("[BENCH] Preparando grafo para ILP (pares por índice)...")
+    grafo_ilp = preparar_grafo_ilp(devs, grafo)
+    print(f"[BENCH] {len(grafo_ilp)} pares com aresta entre candidatos\n")
+
     devs_com_ac = sum(1 for v in ac_medios.values() if v > 0)
     print(f"[BENCH] AC medios prontos | devs com AC>0: {devs_com_ac}/{len(devs)}\n")
 
@@ -91,6 +96,7 @@ def main() -> None:
                 projeto        = projeto,
                 devs           = devs,
                 ac_medios      = ac_medios,
+                grafo_ilp      = grafo_ilp,    # NOVO
                 modo           = MODO,
                 tamanho_equipe = projeto.get("team_size", 4),
                 tempo_limite   = TEMPO_LIMITE,
